@@ -1,0 +1,72 @@
+<html ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+   
+   
+
+</head>
+<!--<body  ng-app="myApp" ng-controller="myCtrl">-->
+<body>
+
+        <div ng-app="myApp" ng-controller="MyCtrl">
+    <div ng-repeat="x in teams">
+    
+    <div add-input>
+        <button>add input</button>{{field}}: {{value}} : {{fields}} : {{values}}</div>
+</div>
+<button class="bg_none" href="" value="Add" ng-click="addItems()">Add Section </button>
+</div>
+
+</body>
+<script>
+var app = angular.module('myApp', []);
+
+app.controller('MyCtrl', function ($scope) {
+
+$scope.teams=[{}];
+$scope.addItems = function(){
+$scope.teams.push({});
+$scope.value="";
+$scope.field = "";
+$scope.values = "";
+$scope.fields = "";
+}
+    // Define $scope.telephone as an array
+   /* $scope.field = [];
+    $scope.value = [];
+	$scope.fields = [];
+	$scope.values = [];*/
+    // Create a counter to keep track of the additional telephone inputs
+    $scope.inputCounter = 0;
+
+
+});
+
+// I've created this directive as an example of $compile in action. 
+app.directive('addInput',  function ($compile) { // inject $compile service as dependency
+    return {
+        restrict: 'A',
+        link: function (scope,element, attrs) {
+            // click on the button to add new input field
+            element.find('button').bind('click', function () 
+			{
+                var input = angular.element('<div><input type="text" ng-model="field[' + scope.inputCounter + ']"><input type="text" ng-model="value[' + scope.inputCounter + ']"><input type="text" ng-model="fields[' + scope.inputCounter + ']"><input type="text" ng-model="values[' + scope.inputCounter + ']"></div>');
+
+
+
+
+                // Compile the HTML and assign to scope
+                var compile = $compile(input)(scope);
+
+                // Append input to div
+                element.append(input);
+
+                // Increment the counter for the next input to be added
+                scope.inputCounter++;
+            });
+        }
+    }
+});
+</script>
+</html>
